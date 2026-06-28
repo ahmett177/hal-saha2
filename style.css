@@ -1,0 +1,235 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f4f7f6;
+    color: #333;
+    padding-bottom: 100px;
+}
+
+/* Üst Navigasyon Barı */
+.navbar {
+    background-color: #1b5e20;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.navbar .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+#user-info-display {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #c8e6c9;
+}
+
+#nav-register-btn {
+    background-color: #ffffff;
+    color: #1b5e20;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#nav-register-btn:hover {
+    background-color: #e8f5e9;
+}
+
+.container {
+    display: none;
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.container.active {
+    display: block;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+header h1 {
+    color: #1b5e20;
+    margin-bottom: 10px;
+}
+
+/* Resimli Saha Kartları */
+.pitch-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.pitch-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: 2px solid transparent;
+}
+
+.pitch-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    border-color: #4caf50;
+}
+
+.pitch-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    background-color: #ddd;
+}
+
+.pitch-card h3 {
+    color: #2e7d32;
+    padding: 15px;
+    text-align: center;
+    font-size: 1.3rem;
+}
+
+/* Saat ve Buton Stilleri */
+#back-btn {
+    background-color: #e0e0e0;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    float: left;
+}
+
+#back-btn:hover { background-color: #bdbdbd; }
+
+.time-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.time-btn {
+    padding: 20px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #4caf50;
+    color: white;
+    transition: all 0.2s;
+}
+
+.time-btn:hover:not(.booked) { background-color: #2e7d32; }
+
+.time-btn.booked {
+    background-color: #d32f2f;
+    cursor: not-allowed;
+    opacity: 0.85;
+}
+
+/* Modal / Popup Stilleri */
+.modal {
+    display: none; 
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 10% auto;
+    padding: 30px;
+    border-radius: 10px;
+    max-width: 400px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.form-group { margin-bottom: 20px; }
+.form-group label { display: block; margin-bottom: 8px; font-weight: bold; }
+.form-group input {
+    width: 100%; padding: 10px; font-size: 1rem; border: 1px solid #ccc; border-radius: 5px;
+}
+
+.modal-buttons { display: flex; justify-content: flex-end; gap: 10px; }
+.modal-buttons button { padding: 10px 15px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; }
+.btn-confirm { background-color: #4caf50; color: white; }
+.btn-cancel { background-color: #e0e0e0; color: #333; }
+
+/* Admin Paneli Stilleri */
+.admin-panel {
+    position: fixed; bottom: 0; left: 0; width: 100%; background-color: #ffffff;
+    box-shadow: 0 -3px 15px rgba(0,0,0,0.15); z-index: 999;
+}
+.admin-header {
+    background-color: #263238; color: #ffffff; padding: 15px 20px;
+    display: flex; justify-content: space-between; align-items: center; cursor: pointer;
+}
+.admin-content {
+    max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; padding: 0 20px;
+}
+.admin-panel.open .admin-content { max-height: 300px; overflow-y: auto; padding: 20px; }
+.admin-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+.admin-table th, .admin-table td { border: 1px solid #cfd8dc; padding: 10px; text-align: left; }
+.admin-table th { background-color: #eceff1; color: #37474f; }
+.admin-table tr:nth-child(even) { background-color: #f8f9fa; }
+
+/* --- YENİ EKLENEN MODÜL STİLLERİ --- */
+
+/* Kantin Modülü */
+.canteen-module {
+    background-color: #f1f8e9; padding: 25px; border-radius: 12px; margin-top: 30px; border: 1px solid #c5e1a5;
+}
+.canteen-module h3 { color: #2e7d32; margin-bottom: 5px; }
+.canteen-desc { color: #666; font-size: 14px; margin-bottom: 15px; }
+.canteen-options { display: flex; flex-direction: column; gap: 12px; }
+.canteen-options label { cursor: pointer; font-weight: 6px; display: flex; align-items: center; gap: 8px; font-weight: bold;}
+.price-summary { margin-top: 20px; padding-top: 15px; border-top: 2px dashed #c5e1a5; }
+.price-summary h4 { margin: 5px 0; color: #444; }
+.extra-cost { color: #c62828; }
+.total-cost { color: #1565c0; margin-top: 10px; }
+
+/* Adam Bulma Panosu */
+.player-board {
+    margin-top: 50px; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.player-board h3 { color: #e65100; border-bottom: 2px solid #ffe0b2; padding-bottom: 10px; margin-bottom: 5px; }
+.board-desc { color: #666; font-size: 14px; margin-bottom: 20px; }
+.player-card { display: flex; justify-content: space-between; align-items: center; padding: 15px; margin-top: 15px; border-radius: 8px; background: #fdfdfd; }
+.player-card.danger { border-left: 5px solid #d32f2f; background: #fffde7; }
+.player-card.info { border-left: 5px solid #1976d2; background: #f0f4c3; }
+.player-info strong { font-size: 16px; color: #222; }
+.player-info .details { font-size: 13px; color: #666; }
+.badge { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; margin-top: 5px; }
+.badge-danger { background: #ffcdd2; color: #b71c1c; }
+.badge-info { background: #bbdefb; color: #0d47a1; }
+.btn-join { background: #263238; color: white; border: none; padding: 10px 20px; font-weight: bold; border-radius: 6px; cursor: pointer; transition: background 0.2s; }
+.btn-join:hover { background: #1b5e20; }

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gelişmiş Halı Saha Rezervasyon Sistemi</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Üst Menü -->
+    <div class="navbar">
+        <div class="logo">⚽ SahaRezerve</div>
+        <div class="user-menu">
+            <span id="user-info-display"></span>
+            <button id="nav-register-btn" onclick="openLoginModal()">Kayıt Ol</button>
+        </div>
+    </div>
+
+    <!-- ANA SAYFA: Sahaların Listelendiği Ekran -->
+    <div id="home-page" class="container active">
+        <header>
+            <h1>Halı Saha Seçimi</h1>
+            <p>Rezervasyon yapmak istediğiniz sahayı seçin.</p>
+        </header>
+        
+        <div class="pitch-grid" id="pitch-list">
+            <!-- JavaScript dinamik olarak resimli kartları buraya ekleyecek -->
+        </div>
+
+        <!-- YENİ ENTEGRASYON: EKSİK OYUNCU BULMA PANOSU -->
+        <div class="player-board">
+            <h3>🤝 Adam Eksik! - Oyuncu Arayan Takımlar</h3>
+            <p class="board-desc">Kadro kurmakta zorlanıyorsanız, maçı kesinleşmiş aşağıdaki takımlara tek tıkla dahil olabilirsiniz.</p>
+            
+            <!-- İlan 1 -->
+            <div class="player-card danger">
+                <div class="player-info">
+                    <strong>Bordo Bereliler FC</strong> <br>
+                    <span class="details">📅 Bugün 21.00 - 22.00 | 📍 Paris Saha</span><br>
+                    <span class="badge badge-danger">Aranan Mevki: 🧤 Kaleci (Acil!)</span>
+                </div>
+                <button onclick="macaKatil('Bordo Bereliler FC')" class="btn-join">Maça Katıl</button>
+            </div>
+
+            <!-- İlan 2 -->
+            <div class="player-card info">
+                <div class="player-info">
+                    <strong>YBS Yıldızları</strong> <br>
+                    <span class="details">📅 Yarın 22.00 - 23.00 | 📍 Çengel SK</span><br>
+                    <span class="badge badge-info">Aranan Mevki: 🏃 Defans (1 Kişi)</span>
+                </div>
+                <button onclick="macaKatil('YBS Yıldızları')" class="btn-join">Maça Katıl</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- REZERVASYON SAYFASI: Saat Seçimi -->
+    <div id="reservation-page" class="container">
+        <header>
+            <button id="back-btn" onclick="goBack()">🔙 Ana Ekrana Dön</button>
+            <h1 id="selected-pitch-name">Saha Adı</h1>
+            <p>Müsait saat aralıklarından birini seçerek adınıza tescil edebilirsiniz.</p>
+        </header>
+
+        <div class="time-grid" id="time-slots">
+            <!-- Saat butonları buraya gelecek -->
+        </div>
+
+        <!-- YENİ ENTEGRASYON: KANTİN VE EKİPMAN KİRALAMA MODÜLÜ -->
+        <div class="canteen-module">
+            <h3>🛒 Maç Öncesi Hızlı Sipariş (Kantin & Ekipman)</h3>
+            <p class="canteen-desc">İhtiyacınız olan ekipmanları şimdiden sepetinize ekleyin, sahaya geldiğinizde hazır olsun.</p>
+            
+            <div class="canteen-options">
+                <label>
+                    <input type="checkbox" id="krampon" value="50" onchange="toplamHesapla()"> 
+                    👟 Krampon Kiralama (+50 TL)
+                </label>
+                <label>
+                    <input type="checkbox" id="yelek" value="20" onchange="toplamHesapla()"> 
+                    🎽 Ekstra Yelek Seti (+20 TL)
+                </label>
+                <label>
+                    <input type="checkbox" id="su" value="30" onchange="toplamHesapla()"> 
+                    💧 1 Koli Su (12 Adet) (+30 TL)
+                </label>
+            </div>
+
+            <div class="price-summary">
+                <h4>Saha Ücreti: <span id="sahaFiyat">400</span> TL</h4>
+                <h4 class="extra-cost">Ekstralar: <span id="ekstraFiyat">0</span> TL</h4>
+                <h3 class="total-cost">💰 Toplam Ödenecek: <span id="genelToplam">400</span> TL</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Kayıt Olma Modalı (Popup) -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <h3>Sisteme Kayıt Ol</h3>
+            <p id="modal-info-text" style="color:#666; margin-bottom:15px;">Rezervasyon yapabilmek için lütfen adınızı ve soyadınızı girin.</p>
+            <div class="form-group">
+                <label for="user-fullname">Adınız Soyadınız:</label>
+                <input type="text" id="user-fullname" placeholder="Örn: Ahmet Yılmaz" autocomplete="off">
+            </div>
+            <div class="modal-buttons">
+                <button class="btn-confirm" onclick="registerUser()">Sisteme Kayıt Ol</button>
+                <button class="btn-cancel" onclick="closeLoginModal()">İptal Et</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADMİN PANELİ -->
+    <div class="admin-panel">
+        <div class="admin-header" onclick="toggleAdminPanel()">
+            <h2>🛠️ Yönetim & Admin Paneli (Kayıtlı Kişileri Gör)</h2>
+            <span id="admin-toggle-icon">▲ Panelini Genişlet</span>
+        </div>
+        <div class="admin-content" id="admin-content-area">
+            <p style="margin-bottom: 15px; color: #666;">Sistem üzerinden kayıt olup saha kiralayan kişilerin listesi:</p>
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Saha Adı</th>
+                        <th>Kiralama Saati</th>
+                        <th>Kiralayanın Adı Soyadı</th>
+                    </tr>
+                </thead>
+                <tbody id="admin-logs">
+                    <tr>
+                        <td colspan="3" style="text-align: center; color: #999;">Henüz yapılmış bir kiralama kaydı bulunmuyor.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
